@@ -1,4 +1,3 @@
-from turtle import dot
 from youtubesearchpython import VideosSearch
 from pytube import YouTube
 import os
