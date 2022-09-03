@@ -8,7 +8,7 @@ import asyncio
 from mutagen.mp3 import MP3
 
 CHANNEL_ID = 1015465255901601823
-MUSIC_PATH = 'music/music{}.mp3'
+MUSIC_PATH = 'music\music{}.mp3'
 UPDATE_DELAY = 1
 
 class Rapid(discord.Client):
@@ -32,14 +32,15 @@ class Rapid(discord.Client):
 
         yt = YouTube(video_data['video_url'])
         video = yt.streams.filter(only_audio=True).first()
-        out_file = video.download(output_path='.')
+        out_file = video.download(output_path='music')
 
         self.song_number += 1
         music_path = MUSIC_PATH.format(self.song_number)
         if os.path.exists(music_path):
             os.remove(music_path)
 
-        base, ext = os.path.splitext(out_file)
+        print(out_file)
+        print(music_path)
         os.rename(out_file, music_path)
 
         return music_path
