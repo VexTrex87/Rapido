@@ -27,9 +27,12 @@ class Rapid(discord.Client):
         return video_data
 
     def download_audio(self, video_data):
+        if not os.path.exists('music'):
+            os.makedirs('music')
+
         yt = YouTube(video_data['video_url'])
         video = yt.streams.filter(only_audio=True).first()
-        out_file = video.download(output_path=".")
+        out_file = video.download(output_path='.')
 
         self.song_number += 1
         music_path = MUSIC_PATH.format(self.song_number)
