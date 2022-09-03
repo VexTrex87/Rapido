@@ -35,12 +35,11 @@ class Rapid(discord.Client):
         out_file = video.download(output_path='music')
 
         self.song_number += 1
+        
         music_path = MUSIC_PATH.format(self.song_number)
         if os.path.exists(music_path):
             os.remove(music_path)
 
-        print(out_file)
-        print(music_path)
         os.rename(out_file, music_path)
 
         return music_path
@@ -138,7 +137,7 @@ class Rapid(discord.Client):
                 }))
 
                 while True:
-                    if not self.voice_client.is_playing:
+                    if not self.voice_client.is_playing():
                         break
 
                     await asyncio.sleep(1)
@@ -189,9 +188,6 @@ class Rapid(discord.Client):
             'path': music_path,
             'video_data': video_data,
         })
-
-        if not self.voice_client:
-            await self.execute_join(message)
 
     async def execute_pause(self, message):
         if not self.voice_client:
@@ -261,7 +257,7 @@ class Rapid(discord.Client):
         self.voice_client.stop()
 
         await message.reply(embed=self.create_embed({
-            'title': f'Paused',
+            'title': f'Skipped',
             'color': discord.Color.green()
         }))
 
@@ -274,7 +270,7 @@ class Rapid(discord.Client):
         await message.reply(embed=self.create_embed({
             'title': 'Queue'
         }, {
-            'Upcoming Songs': '\n'.join(queue_parts)
+            'Upcoming Songs': '\n'.join(queue_parts) or 'None'
         }))
 
     async def execute_remove(self, message):
